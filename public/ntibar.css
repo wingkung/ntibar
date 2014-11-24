@@ -1,0 +1,16 @@
+.ntibar {
+  position: fixed;
+  top: 30px;
+  right: 0;
+  width: 100px;
+  -webkit-box-shadow: 0 0 5px #888;
+  box-shadow: 0 0 5px #888;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  height: 60px;
+}
+.ntibar:hover {
+  margin-left: auto;
+  height: 60px;
+  min-width: 800px;
+}

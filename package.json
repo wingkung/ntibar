@@ -11,5 +11,8 @@
     "url": "https://wing_kung@bitbucket.org/aztone/ntibar.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.10.3"
+  }
 }
