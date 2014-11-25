@@ -1,16 +1,34 @@
+.orange {
+  color: #ffa500;
+}
+.green {
+  color: #008000;
+}
 .ntibar {
   position: fixed;
   top: 30px;
   right: 0;
-  width: 100px;
   -webkit-box-shadow: 0 0 5px #888;
   box-shadow: 0 0 5px #888;
   -webkit-border-radius: 5px;
   border-radius: 5px;
   height: 60px;
+  width: 1024px;
+  right: -924px;
 }
 .ntibar:hover {
   margin-left: auto;
-  height: 60px;
-  min-width: 800px;
+  right: 0;
+  -webkit-transition: eft 0.3s ease-in-out;
+  -moz-transition: eft 0.3s ease-in-out;
+  -o-transition: eft 0.3s ease-in-out;
+  -ms-transition: eft 0.3s ease-in-out;
+  transition: eft 0.3s ease-in-out;
+}
+.ntibar form {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.ntibar .status {
+  width: 100px;
 }

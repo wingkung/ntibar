@@ -1,13 +1,80 @@
 <div class="ntibar">
-    <form class="form-inline" ng-show="logined">
-        <div class="col-md-12 text-center">
+    <form class="form-inline">
+        <div class="form-group status text-center">
+            <i class="fa fa-wifi green"></i>
+        </div>
+        <div class="form-group">
             <div class="input-group">
-                <input class="">
+                <input class="form-control" placeholder="电话号码">
+                <div class="input-group-btn">
+                    <button class="btn btn-info"><i class="fa fa-sign-in"></i><span>&nbsp;签入</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-warning btn-sm"><i class="fa fa-sign-out"></i>&nbsp;签出</button>
+        </div>
+        <div class="form-group">
+            <div class="btn-group-sm">
+                <button class="btn btn-sm btn-primary" ng-disabled="btnHangup" ng-click="hangup()"><i class="fa fa-times-circle"></i>&nbsp;挂机
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnDial" ng-click="frmDial=true;"><i
+                        class="fa fa-phone"></i>&nbsp;外拨
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnHold" ng-click="hold()"><i class="fa fa-microphone-slash"></i>&nbsp;保持
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnUnHold" ng-click="unhold()"><i class="fa fa-microphone"></i>&nbsp;取消
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnTransfer" ng-click="frmTransfer=true;"><i
+                        class="fa fa-share"></i>&nbsp;转移
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnConsult" ng-click="frmConsult=true;"><i
+                        class="fa fa-share-square"></i>&nbsp;咨询
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnConsultCancel" ng-click="consultCancel()"><i class="fa fa-reply"></i>&nbsp;取消
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnConsultTransfer" ng-click="consultTransfer()"><i class="fa fa-share"></i>&nbsp;转移
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnConsultBridge" ng-click="consultBridge()"><i class="fa fa-reply-all"></i>&nbsp;三方
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnListen" ng-show="isAdmin" ng-click="frmListen=true;cconeClient.agentsInfo();">
+                    <i class="fa fa-headphones"></i>&nbsp;监听
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnRopcall" ng-show="isAdmin" ng-click="ropcall()"><i
+                        class="fa fa-reply"></i>&nbsp;拦截
+                </button>
+                <button class="btn btn-sm btn-primary" ng-disabled="btnIntrusion" ng-show="isAdmin" ng-click="intrusion()"><i
+                        class="fa fa-reply-all"></i>&nbsp;强插
+                </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-sm btn-info" ng-disabled="btnEndWrapup" ng-click="endWrapup()"><i class="fa fa-check-square"></i>&nbsp;就绪
+            </button>
+            <button class="btn btn-sm btn-info" ng-disabled="btnChangeState" ng-click="frmChangeState=true;"><i
+                    class="fa fa-coffee"></i>&nbsp;状态
+            </button>
+            <button class="btn btn-sm btn-info" ng-click="queueMonitor()">队列监控</button>
+        </div>
+        <div class="form-group">
+            <div class="checkbox-inline">
+                <label>
+                    <input type="checkbox" ng-model="adminMode" ng-change="changeAdminMode()">管理员模式
+                </label>
+            </div>
+            <div class="checkbox-inline">
+                <label>
+                    <input type="checkbox" ng-model="wrapupMode" ng-change="changeWrapupMode()">话后模式
+                </label>
             </div>
         </div>
     </form>
+    <form class="form-inline">
+        <div class="form-group">
+            <p class="form-control-static">{{name}}</p>
+        </div>
+        <div class="form-group">
 
-    <form>
-
+        </div>
     </form>
 </div>

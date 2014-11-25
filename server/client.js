@@ -2,6 +2,7 @@
 
 var net = require('net');
 var util = require('util');
+var _ = require('lodash');
 
 var clients = exports.clients = {};
 var cache = {
@@ -85,7 +86,11 @@ exports.Client = function (params) {
             if (args.length > 2) {
                 self.subState = args[2];
             }
-            self.broadcast(self.sockets, 'state', {state: self.state, subState: self.subState, stateDescr: self.stateDescr })
+            self.broadcast(self.sockets, 'state', {
+                state: self.state,
+                subState: self.subState,
+                stateDescr: self.stateDescr
+            })
         } else if (args[0] == "InitAgent") {
             console.log(args);
             for (var i in args) {
@@ -105,7 +110,12 @@ exports.Client = function (params) {
             if (self.typeCode > 1)
                 self.broadcast(self.sockets, 'admin_mode', {adminMode: self.adminMode});
             self.broadcast(self.sockets, 'wrapup_mode', {wrapupMode: self.wrapupMode});
-            self.broadcast(self.sockets, 'info', {agentName: self.agentName, agentId: self.agentId, ext: self.ext, typeCode: self.typeCode})
+            self.broadcast(self.sockets, 'info', {
+                agentName: self.agentName,
+                agentId: self.agentId,
+                ext: self.ext,
+                typeCode: self.typeCode
+            })
         } else if (args[0] == "Scene") {
             self.onScene({scene: args[1], ctls: args[2]});
         } else if (args[0] == "Hangup") {
@@ -259,7 +269,13 @@ exports.Client = function (params) {
             for (var i in arr) {
                 var line = arr[i];
                 var arr1 = line.split(':');
-                var agent = {agentId: arr1[0], state: arr1[1], stateDescr: translateState(arr1[1]), name: arr1[2], ext: arr1[3]};
+                var agent = {
+                    agentId: arr1[0],
+                    state: arr1[1],
+                    stateDescr: translateState(arr1[1]),
+                    name: arr1[2],
+                    ext: arr1[3]
+                };
                 cache.agent_infos.data.push(agent);
             }
             cache.agent_infos.time = now;
@@ -276,7 +292,12 @@ exports.Client = function (params) {
     this.status = function (socket) {
         var descr = translateState(self.state);
         this.emit(socket, 'login', {rtn: true, descr: '登录成功'});
-        this.emit(socket, 'info', {agentName: self.agentName, agentId: self.agentId, typeCode: self.typeCode, ext: self.ext});
+        this.emit(socket, 'info', {
+            agentName: self.agentName,
+            agentId: self.agentId,
+            typeCode: self.typeCode,
+            ext: self.ext
+        });
         this.emit(socket, 'state', {state: self.state, subState: self.subState, stateDescr: descr});
         this.emit(socket, 'scene', {scene: self.scene, ctls: self.ctls});
         this.emit(socket, 'admin_mode', {adminMode: self.adminMode});
@@ -369,13 +390,13 @@ exports.Client = function (params) {
     this.queuesInfo = function (data) {
         self.send('SkillGroupsInfo', '');
     };
-    this.queueMonitor = function(){
+    this.queueMonitor = function () {
         self.send('QueueMonitor', '');
     };
 
     this.destroy = function () {
         console.log(self.tenantId + '-' + self.agentId + ":销毁");
-        removeClient(self.tenantId, self.agentId);
+        remove(self.tenantId, self.agentId);
         clearInterval(self.timer);
     };
 
@@ -430,27 +451,22 @@ function translateState(state) {
     }
 }
 
-exports.findClient = function (tenantId, agentId) {
-    return clients[util.format("_%s_%s", tenantId, agentId)];
+exports.find = function (tenantId, agentId) {
+    return _.find(clients, {tenantId: tenantId, agentId: agentId});
 };
 
-exports.addClient = function (tenantId, agentId, client) {
-    clients[util.format('_%s_%s', tenantId, agentId)] = client;
+exports.add = function (client) {
+    return clients.push(client);
 };
 
-exports.findClientBySocket = function (socket) {
-    for (var key in clients) {
-        var client = clients[key];
-        for (var j in client.sockets) {
-            if (socket == client.sockets[j]) {
-                return client;
-            }
-        }
-    }
-    return undefined;
+exports.findBySocket = function (socket) {
+    return _.find(clients, function (c) {
+        var s = _.find(c.sockets, socket);
+        return !_.isUndefined(s) && !_.isNull(s);
+    })
 };
 
-var removeClient = exports.removeClient = function (tenantId, agentId) {
-    clients[util.format("_%s_%s", tenantId, agentId)] = undefined;
+var remove = exports.remove = function (tenantId, agentId) {
+    _.remove(clients, {tenantId: tenantId, agentId: agentId});
 };
 

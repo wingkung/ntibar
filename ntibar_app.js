@@ -3,18 +3,17 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-var ac = require('./client');
-var config =require('./config');
-var port = 3000;
+var clientManage = require('./server/client');
+var config =require('./server/config');
+var port = 3100;
 
-
-io.of('/ccone').on('connection', function (socket) {
+io.of('/nti').on('connection', function (socket) {
     socket.on('login', function (data) {
         console.log("用户登录: " + JSON.stringify(data));
         if (data.tenantId == null || data.agentId == null || data.password == null || data.ext == null) {
             socket.emit('login', {rtn: false, descr: '参数不完整'});
         } else {
-            var client = ac.findClient(data.tenantId, data.agentId);
+            var client = clientManage.find(data.tenantId, data.agentId);
             if (client) {
                 client.status(socket);
                 client.sockets.push(socket);
@@ -29,12 +28,12 @@ io.of('/ccone').on('connection', function (socket) {
                     ext: data.ext,
                     host: host
                 };
-                client = new ac.Client(params);
+                client = new clientManage.Client(params);
                 client.sockets.push(socket);
                 client.resetCountdown();
                 console.log('push ' + socket.id);
                 client.init();
-                ac.addClient(data.tenantId, data.agentId, client);
+                clientManage.add(client);
             }
             socket.cconeClient = client;
         }
@@ -135,6 +134,6 @@ io.of('/ccone').on('connection', function (socket) {
 
 
 server.listen(port, function () {
-    console.log('ccone_ap server listening at port %d', port);
+    console.log('nti_ap server listening at port %d', port);
 });
 
