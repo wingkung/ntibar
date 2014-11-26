@@ -1,8 +1,11 @@
-.orange {
-  color: #ffa500;
+.red {
+  color: #f00;
 }
 .green {
   color: #008000;
+}
+.grey {
+  color: #808080;
 }
 .ntibar {
   position: fixed;

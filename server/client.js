@@ -4,7 +4,7 @@ var net = require('net');
 var util = require('util');
 var _ = require('lodash');
 
-var clients = exports.clients = {};
+var clients = [];
 var cache = {
     agent_infos: {time: 0, data: []},
     ivr_infos: {time: 0, data: []},
