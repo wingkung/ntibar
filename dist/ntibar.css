@@ -1,0 +1,43 @@
+.red {
+  color: #f00;
+}
+.green {
+  color: #008000;
+}
+.grey {
+  color: #808080;
+}
+.ntibar {
+  position: fixed;
+  top: 60px;
+  -webkit-box-shadow: 0 0 5px #888;
+  box-shadow: 0 0 5px #888;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  width: 1024px;
+  right: -974px;
+  background-color: #fff;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.ntibar:hover {
+  margin-left: auto;
+  right: 0;
+  -webkit-transition: eft 0.3s ease-in-out;
+  -moz-transition: eft 0.3s ease-in-out;
+  -o-transition: eft 0.3s ease-in-out;
+  -ms-transition: eft 0.3s ease-in-out;
+  transition: eft 0.3s ease-in-out;
+}
+.ntibar form {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.ntibar .status {
+  width: 50px;
+}
+.ntibar .status-bar {
+  width: 200px;
+  padding: 0 10px 0 10px;
+}
