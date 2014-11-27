@@ -390,6 +390,17 @@ app.controller('NtiBarCtrl', function ($scope, $nti) {
     $scope.CTL_LISTEN = 1 << 13;
     $scope.CTL_ROPCALL = 1 << 17;
 
+    $scope.translateState = function(state, subState){
+        switch(state){
+            case "1": return '空闲';
+            case "2": return '忙';
+            case "3": return '连接中';
+            case "4": return '话后';
+            case "5": return '通话';
+            default: return '其他';
+        }
+    };
+
     $scope.client = $nti.client;
     $nti.observer(function (client) {
         $scope.$apply(function () {
@@ -411,6 +422,52 @@ app.controller('NtiBarCtrl', function ($scope, $nti) {
     };
 
     $scope.dial = function(){
-
+        $nti.dial({type: 2, target: $scope.dTarget});
     };
+
+    $scope.logout = function(){
+        $nti.logout();
+    };
+
+    $scope.hold = function(){
+        $nti.hold();
+    };
+
+    $scope.unHold = function(){
+        $nti.unHold();
+    };
+
+    $scope.consult = function(){
+        $nti.consult({type:2, target: $scope.cTarget});
+    };
+
+    $scope.consultBridge = function(){
+        $nti.consultBridge();
+    };
+
+    $scope.consultCancel = function(){
+        $nti.consultCancel();
+    };
+
+    $scope.consultTransfer = function(){
+        $nti.consultTransfer();
+    };
+
+    $scope.transfer = function(){
+        $nti.transfer({type:2, target: $scope.tTarget});
+    };
+
+    $scope.hangup = function(){
+        $nti.hangup();
+    };
+
+    $scope.endWrapup = function(){
+        $nti.changeState({state: 0})
+    };
+
+    $scope.changeState = function(state){
+        $nti.changeState({state: state});
+    };
+
+
 });

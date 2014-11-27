@@ -39,6 +39,12 @@
   width: 50px;
 }
 .ntibar .status-bar {
-  width: 200px;
-  padding: 0 10px 0 10px;
+  width: 300px;
+  padding: 0 10px 0 50px;
+}
+.ntibar nti-func * {
+  display: none;
+}
+.ntibar nti-func:last-child {
+  display: block;
 }

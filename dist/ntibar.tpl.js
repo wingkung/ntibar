@@ -8,10 +8,12 @@ angular.module('nti').run(['$templateCache', function($templateCache) {
         /*<div class="ntibar">
          <form class="form-inline">
          <div class="form-group status text-center">
-         <i class="fa fa-wifi fa-2x "
-         ng-class="{'green': client.status==1, 'grey': client.status==-1, 'red': client.status==0}"></i>
+         <span>
+         <i class="fa fa-phone fa-2x" ng-class="{'green': client.status==1, 'grey': client.status==-1, 'red': client.status==0}"></i>
+         {{client.name}}
+         </span>
          </div>
-         <div class="form-group" ng-show="client.status==0">
+         <div class="form-group " ng-show="client.status==0">
          <input class="form-control" ng-model="agentId" placeholder="工号">
          <input class="form-control" ng-model="ext" placeholder="电话号码">
          <button class="btn btn-sm btn-info" ng-click="login()">
@@ -19,7 +21,7 @@ angular.module('nti').run(['$templateCache', function($templateCache) {
          </button>
          </div>
          <div class="form-group" ng-show="client.status==1">
-         <button class="btn btn-sm btn-warning">
+         <button class="btn btn-sm btn-warning" ng-click="logout()">
          <i class="fa fa-sign-out"></i>&nbsp;签出
          </button>
          </div>
@@ -28,7 +30,7 @@ angular.module('nti').run(['$templateCache', function($templateCache) {
          <i class="fa fa-times-circle"></i>&nbsp;挂机
          </button>
          </div>
-         <div class="form-group" ng-show="has(CTL_ODIAL)">
+         <div class="form-group nti-func" ng-show="has(CTL_ODIAL)">
          <input class="form-control" ng-model="dTarget" placeholder="输入外拨号码">
          <button class="btn btn-sm btn-primary" ng-click="dial()">
          <i class="fa fa-phone"></i>&nbsp;外拨
@@ -72,14 +74,17 @@ angular.module('nti').run(['$templateCache', function($templateCache) {
          </button>
          </div>
          <div class="form-group" ng-show="client.status==1">
-         <button class="btn btn-sm btn-info" ng-disabled="client.state == 4" ng-click="endWrapup()">
+         <button class="btn btn-sm btn-info" ng-disabled="!(client.state==4)" ng-click="endWrapup()">
          <i class="fa fa-check-square"></i>&nbsp;就绪
          </button>
-         <button class="btn btn-sm btn-info" ng-disabled="client.state==1 || client.state==2"
-         ng-click="changeState()">
-         <i class="fa fa-coffee"></i>&nbsp;状态
+         <button class="btn btn-sm btn-info" ng-model="state" ng-show="client.state==2"
+         ng-click="changeState(0)">
+         <i class="fa fa-coffee"></i>&nbsp;示闲
          </button>
-         <button class="btn btn-sm btn-info" ng-click="queueMonitor()">队列监控</button>
+         <button class="btn btn-sm btn-info" ng-model="state" ng-show="client.state==1"
+         ng-click="changeState(1)">
+         <i class="fa fa-coffee"></i>&nbsp;示忙
+         </button>
          </div>
          <div class="form-group" ng-show="client.status==1">
          <div class="checkbox-inline" ng-show="client.isAdmin">
@@ -96,7 +101,10 @@ angular.module('nti').run(['$templateCache', function($templateCache) {
          </form>
          <form class="form-inline" ng-show="client.status==1">
          <div class="form-group">
-         <p class="form-control-static status-bar">姓名:{{client.name}} 绑定:{{client.ext}}</p>
+         <p class="form-control-static status-bar">姓名:{{client.name}} 绑定:{{client.ext}} 状态:{{translateState(client.state)}}</p>
+         </div>
+         <div class="form-group">
+         <p class="form-control-static status-bar" ng-show="client.userin">来电号码: {{client.userin.caller}}</p>
          </div>
          <div class="form-group">
          <p class="form-control-static status-bar">操作结果:{{client.error}}</p>
