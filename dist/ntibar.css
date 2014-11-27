@@ -20,6 +20,7 @@
   opacity: 1;
   -ms-filter: none;
   filter: none;
+  z-index: 999999999;
 }
 .ntibar:hover {
   margin-left: auto;
