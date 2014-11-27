@@ -1,0 +1,19 @@
+{
+  "name": "test-ntibar",
+  "version": "0.0.0",
+  "authors": [
+    "wing <wing_kung@live.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ntibar": "*"
+  }
+}
