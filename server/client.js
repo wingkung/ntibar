@@ -31,9 +31,9 @@ exports.Client = function (params) {
     };
     this.init = function () {
         self.netSocket = net.connect({port: 14600, host: self.host}, function () {
-            var md5 = require('crypto').createHash('md5');
-            md5.update(self.password);
-            self.send('Login', md5.digest("hex") + ',' + self.ext + ',N');
+            /*var md5 = require('crypto').createHash('md5');
+            md5.update(self.password);md5.digest("hex")*/
+            self.send('Login', self.password + ',' + self.ext + ',N');
             console.log(self.tenantId + '-' + self.agentId + ":客户端连接建立");
         });
         self.netSocket.on('data', function (data) {

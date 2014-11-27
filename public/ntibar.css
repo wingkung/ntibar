@@ -15,9 +15,8 @@
   box-shadow: 0 0 5px #888;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  height: 60px;
   width: 1024px;
-  right: -924px;
+  right: -974px;
 }
 .ntibar:hover {
   margin-left: auto;
@@ -33,5 +32,9 @@
   padding-bottom: 5px;
 }
 .ntibar .status {
-  width: 100px;
+  width: 50px;
+}
+.ntibar .status-bar {
+  width: 200px;
+  padding: 0 10px 0 10px;
 }

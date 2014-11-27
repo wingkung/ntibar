@@ -18,6 +18,7 @@ app.factory('$nti', function(){
 
     var setup = function (fn) {
         fn();
+        console.log(service.client);
         angular.forEach(cbs, function (cb) {
             if (cb) {
                 cb(service.client);
@@ -59,7 +60,6 @@ app.factory('$nti', function(){
                     service.client.error = 'cti连接异常';
                 });
             });
-
 
             service._io.on('login', function (data) {
                 setup(function () {
@@ -119,7 +119,7 @@ app.factory('$nti', function(){
             });
             service._io.on('info', function (data) {
                 setup(function(){
-                    service.client.name = data.name;
+                    service.client.name = data.agentName;
                     service.client.agentId = data.agentId;
                     service.client.ext = data.ext;
                     service.client.isAdmin = data.typeCode == 'Y';
@@ -184,6 +184,7 @@ app.factory('$nti', function(){
             service.login = function (params) {
                 service.client.tenantId = params.tenantId || "1";
                 service.client.agentId = params.agentId;
+                params.password = '89ba9fa0769dc0e83ff6d2c013f0795f';
                 _emit('login', params);
             };
 
