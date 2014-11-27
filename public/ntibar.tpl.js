@@ -105,7 +105,7 @@ angular.module('nti').run(['$templateCache', function($templateCache) {
          </div>*/
     };
     var lines = new String(fun);
-    var tpl =  lines.substring(lines.indexOf("/*") + 3, lines.lastIndexOf("*/"));
+    var tpl =  lines.substring(lines.indexOf("/*") + 2, lines.lastIndexOf("*/"));
     $templateCache.put('ntibar.tpl.html', tpl);
 
 }]);
