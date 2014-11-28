@@ -193,6 +193,14 @@ exports.Client = function (params) {
                         data.callee = arr[0];
                         data.sessionId = arr[1];
                         data.sessionType = arr[2];
+                    }else if (kv[0] == 'SessionType'){
+                        data.sessionType = kv[1];
+                    }else if (kv[0] == 'SessionId'){
+                        data.sessionId = kv[1];
+                    }else if (kv[0] == 'Message'){
+                        data.message = kv[1];
+                    }else if (kv[0] == 'QueueId'){
+                        data.queueId = kv[1];
                     }
                 }
             }

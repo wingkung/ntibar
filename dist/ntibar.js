@@ -3,7 +3,7 @@
  */
 'use strict';
 var app = angular.module('nti', []);
-app.factory('$nti', function(){
+app.factory('$nti', function($rootScope){
     var service = {};
     service.client = {
         status: -1,
@@ -115,6 +115,9 @@ app.factory('$nti', function(){
                 setup(function(){
                     service.client.state = data.state;
                     service.client.subState = data.subState;
+                    if (service.client.state == 3){
+                        service.client.ctls = 0;
+                    }
                 })
             });
             service._io.on('info', function (data) {
@@ -162,6 +165,7 @@ app.factory('$nti', function(){
             service._io.on('userin', function (data) {
                 setup(function(){
                     service.client.userin = data;
+                    $rootScope.$broadcast('nti:userin', data);
                 })
             });
 
@@ -390,18 +394,29 @@ app.controller('NtiBarCtrl', function ($scope, $nti) {
     $scope.CTL_LISTEN = 1 << 13;
     $scope.CTL_ROPCALL = 1 << 17;
 
-    $scope.translateState = function(state, subState){
-        switch(state){
-            case "1": return '空闲';
-            case "2": return '忙';
-            case "3": return '连接中';
-            case "4": return '话后';
-            case "5": return '通话';
-            default: return '其他';
+    $scope.translateState = function(status, state){
+        if (status == -1){
+            return "未连接";
+        }else if(status == 0){
+            return "未登录";
+        }else if(state == 1){
+            return '空闲';
+        }else if(state == 2){
+            return '忙';
+        }else if (state == 3){
+            return '连接中';
+        }else if (state == 4){
+            return '话后';
+        }else if (state == 5){
+            return '通话';
+        }else{
+            return '其他';
         }
     };
 
     $scope.client = $nti.client;
+
+
     $nti.observer(function (client) {
         $scope.$apply(function () {
             $scope.client = client;
@@ -412,7 +427,7 @@ app.controller('NtiBarCtrl', function ($scope, $nti) {
         if ($scope.client.status < 1)
             return false;
         if (ctl == 'hangup'){
-            return ($scope.client.ctls & $scope.CTL_ODIAL) == 0;
+            return ($scope.client.state == 3 || $scope.client.state == 5);
         }
         return ($scope.client.ctls & ctl) != 0;
     };
@@ -469,5 +484,13 @@ app.controller('NtiBarCtrl', function ($scope, $nti) {
         $nti.changeState({state: state});
     };
 
+    $scope.changeAdminMode = function(){
+        $nti.adminMode({mode: $scope.adminMode});
+    };
+
+
+    $scope.changeWrapupMode = function(){
+        $nti.wrapupMode({mode: $scope.wrapupMode});
+    };
 
 });

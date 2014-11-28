@@ -7,6 +7,21 @@
 .grey {
   color: #808080;
 }
+.black {
+  color: #000;
+}
+.cornflowerblue {
+  color: #6495ed;
+}
+.orange {
+  color: #ffa500;
+}
+.pink {
+  color: #ffc0cb;
+}
+.blue {
+  color: #00f;
+}
 .ntibar {
   position: fixed;
   top: 60px;
@@ -21,15 +36,15 @@
   -ms-filter: none;
   filter: none;
   z-index: 999999999;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  transition: all 0.5s;
 }
 .ntibar:hover {
   margin-left: auto;
   right: 0;
-  -webkit-transition: eft 0.3s ease-in-out;
-  -moz-transition: eft 0.3s ease-in-out;
-  -o-transition: eft 0.3s ease-in-out;
-  -ms-transition: eft 0.3s ease-in-out;
-  transition: eft 0.3s ease-in-out;
 }
 .ntibar form {
   padding-top: 5px;

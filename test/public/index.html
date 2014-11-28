@@ -5,18 +5,21 @@
     <title></title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="bower_components/ntibar/public/ntibar.css">
+    <link rel="stylesheet" href="bower_components/ntibar/dist/ntibar.css">
 </head>
 <body ng-app="testApp">
 <div ng-nti-bar></div>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/ntibar/public/ntibar.js"></script>
-<script src="bower_components/ntibar/public/ntibar.tpl.js"></script>
+<script src="bower_components/ntibar/dist/ntibar.js"></script>
+<script src="bower_components/ntibar/dist/ntibar.tpl.js"></script>
 <script>
     var app = angular.module('testApp', ['nti']);
-    app.run(function($nti){
+    app.run(function($nti, $rootScope){
         $nti.init('127.0.0.1:3100');
+        $rootScope.$on('nti:userin', function(event, data){
+            console.log(data);
+        })
     })
 </script>
 
