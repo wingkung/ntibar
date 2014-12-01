@@ -394,7 +394,7 @@ app.controller('NtiBarCtrl', function ($scope, $nti) {
     $scope.CTL_LISTEN = 1 << 13;
     $scope.CTL_ROPCALL = 1 << 17;
 
-    $scope.translateState = function(status, state){
+    $scope.ntiTranslateState = function(status, state){
         if (status == -1){
             return "未连接";
         }else if(status == 0){
@@ -414,83 +414,83 @@ app.controller('NtiBarCtrl', function ($scope, $nti) {
         }
     };
 
-    $scope.client = $nti.client;
+    $scope.ntiClient = $nti.client;
 
 
     $nti.observer(function (client) {
         $scope.$apply(function () {
-            $scope.client = client;
+            $scope.ntiClient = client;
         });
     });
 
-    $scope.has = function (ctl) {
-        if ($scope.client.status < 1)
+    $scope.ntiHas = function (ctl) {
+        if ($scope.ntiClient.status < 1)
             return false;
         if (ctl == 'hangup'){
-            return ($scope.client.state == 3 || $scope.client.state == 5);
+            return ($scope.ntiClient.state == 3 || $scope.ntiClient.state == 5);
         }
-        return ($scope.client.ctls & ctl) != 0;
+        return ($scope.ntiClient.ctls & ctl) != 0;
     };
 
-    $scope.login = function(){
-        $nti.login({tenantId:1, agentId: $scope.agentId, password: 'e10adc3949ba59abbe56e057f20f883e', ext: $scope.ext});
+    $scope.ntiLogin = function(){
+        $nti.login({tenantId:1, agentId: $scope.ntiAgentId, password: 'e10adc3949ba59abbe56e057f20f883e', ext: $scope.ntiExt});
     };
 
-    $scope.dial = function(){
-        $nti.dial({type: 2, target: $scope.dTarget});
+    $scope.ntiDial = function(){
+        $nti.dial({type: 2, target: $scope.ntidTarget});
     };
 
-    $scope.logout = function(){
+    $scope.ntiLogout = function(){
         $nti.logout();
     };
 
-    $scope.hold = function(){
+    $scope.ntiHold = function(){
         $nti.hold();
     };
 
-    $scope.unHold = function(){
+    $scope.ntiUnHold = function(){
         $nti.unHold();
     };
 
-    $scope.consult = function(){
-        $nti.consult({type:2, target: $scope.cTarget});
+    $scope.ntiConsult = function(){
+        $nti.consult({type:2, target: $scope.nticTarget});
     };
 
-    $scope.consultBridge = function(){
+    $scope.ntiConsultBridge = function(){
         $nti.consultBridge();
     };
 
-    $scope.consultCancel = function(){
+    $scope.ntiConsultCancel = function(){
         $nti.consultCancel();
     };
 
-    $scope.consultTransfer = function(){
+    $scope.ntiConsultTransfer = function(){
         $nti.consultTransfer();
     };
 
-    $scope.transfer = function(){
-        $nti.transfer({type:2, target: $scope.tTarget});
+    $scope.ntiTransfer = function(){
+        $nti.transfer({type:2, target: $scope.ntitTarget});
     };
 
-    $scope.hangup = function(){
+    $scope.ntiHangup = function(){
         $nti.hangup();
     };
 
-    $scope.endWrapup = function(){
+    $scope.ntiEndWrapup = function(){
         $nti.changeState({state: 0})
     };
 
-    $scope.changeState = function(state){
+    $scope.ntiChangeState = function(state){
         $nti.changeState({state: state});
     };
 
-    $scope.changeAdminMode = function(){
-        $nti.adminMode({mode: $scope.adminMode});
+    $scope.ntiChangeAdminMode = function(){
+        $nti.adminMode({mode: $scope.ntiClient.adminMode});
     };
 
 
-    $scope.changeWrapupMode = function(){
-        $nti.wrapupMode({mode: $scope.wrapupMode});
+    $scope.ntiChangeWrapupMode = function(){
+        $nti.wrapupMode({mode: $scope.ntiClient.wrapupMode});
     };
 
 });
