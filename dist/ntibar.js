@@ -32,16 +32,26 @@ app.factory('$nti', function($rootScope){
         });
     };
 
-    service.init = function (url) {
+    service.init = function (url, uid, name, type) {
         $.getScript('http://' + url + '/socket.io/socket.io.js').done(function () {
             service.client.url = url;
             service._io = io('http://' + url + '/nti');
             service._io.on('connect', function () {
+                service._io.emit('init_staff', {uid: uid, name: name, type: type});
+            });
+
+            service._io.on('init_staff', function(data){
                 setup(function () {
+                    service.client.staffId = data.staff_id;
+                    service.client.agentId = data.agent_id;
+                    service.client.ext = data.ext;
+                    service.client.name = data.name;
+                    service.client.aqs = data.queues;
                     service.client.status = 0;
                     service.client.error = '连接成功';
                 });
             });
+
             service._io.on('error', function () {
                 setup(function () {
                     service.client.status = -1;
@@ -433,7 +443,14 @@ app.controller('NtiBarCtrl', function ($scope, $nti) {
     };
 
     $scope.ntiLogin = function(){
-        $nti.login({tenantId:1, agentId: $scope.ntiAgentId, password: 'e10adc3949ba59abbe56e057f20f883e', ext: $scope.ntiExt});
+        $nti.login({
+            tenantId:1,
+            agentId: $scope.ntiClient.agentId,
+            password: 'e10adc3949ba59abbe56e057f20f883e',
+            ext: $scope.ntiClient.ext,
+            queus: $scope.ntiClient.aqs,
+            staffId: $scope.ntiClient.staffId
+        });
     };
 
     $scope.ntiDial = function(){

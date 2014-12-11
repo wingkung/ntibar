@@ -9,9 +9,15 @@
         </div>
         <div class="form-group">
             <form class="form-inline">
-                <div class="form-group " ng-show="ntiClient.status==0">
-                    <input class="form-control" ng-model="ntiAgentId" placeholder="工号">
-                    <input class="form-control" ng-model="ntiExt" placeholder="电话号码">
+                <div class="form-group" ng-show="ntiClient.status==0">
+                    <span class="form-control-static">分配工号:{{ntiClient.agent_id}}</span>
+                    <input class="form-control" ng-model="ntiClient.ext" placeholder="电话号码">
+                    <div class="checkbox-inline">
+                        <label  ng-repeat="aq in ntiClient.aqs">
+                            <input type="checkbox" ng-model="aq.checked"> {{aq.name}}
+                        </label>
+
+                    </div>
                     <button class="btn btn-sm btn-info" ng-click="ntiLogin()">
                         <i class="fa fa-sign-in"></i>&nbsp;签入
                     </button>
