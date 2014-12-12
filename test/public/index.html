@@ -16,7 +16,7 @@
 <script>
     var app = angular.module('testApp', ['nti']);
     app.run(function($nti, $rootScope){
-        $nti.init('127.0.0.1:3100', 1, '龚颖', 'B');
+        $nti.init('127.0.0.1:3100', 3, '龚颖3', 'C');
         $rootScope.$on('nti:userin', function(event, data){
             console.log(data);
         })

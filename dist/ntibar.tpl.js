@@ -5,16 +5,18 @@ angular.module('nti').run(['$templateCache', function($templateCache) {var fun =
                 <i class="fa fa-phone fa-2x"
                    ng-class="{'green': ntiClient.state==1,'red': ntiClient.state==2,'pink':ntiClient.state==3,'cornflowerblue': ntiClient.state==4,'orange':ntiClient.state==5,'grey': ntiClient.status==-1,'black': ntiClient.status==0}"></i>
             </span>
+
             <p>{{ntiTranslateState(ntiClient.status, ntiClient.state)}}</p>
         </div>
         <div class="form-group">
             <form class="form-inline">
                 <div class="form-group" ng-show="ntiClient.status==0">
-                    <span class="form-control-static">分配工号:{{ntiClient.agent_id}}</span>
+                    <span class="form-control-static">分配工号:{{ntiClient.agentId}}</span>
                     <input class="form-control" ng-model="ntiClient.ext" placeholder="电话号码">
+
                     <div class="checkbox-inline">
-                        <label  ng-repeat="aq in ntiClient.aqs">
-                            <input type="checkbox" ng-model="aq.checked"> {{aq.name}}
+                        <label ng-repeat="aq in ntiClient.aqs">
+                            <input type="checkbox" ng-model="aq.checked"> {{aq.queue_name}}
                         </label>
 
                     </div>
@@ -100,16 +102,18 @@ angular.module('nti').run(['$templateCache', function($templateCache) {var fun =
                         </label>
                     </div>
                 </div>
+
             </form>
-            <form class="form-inline" ng-show="ntiClient.status==1">
-                <div class="form-group">
+            <form class="form-inline" >
+                <div class="form-group" ng-show="ntiClient.status==1">
                     <p class="form-control-static status-bar">姓名:{{ntiClient.name}} 绑定:{{ntiClient.ext}}</p>
                 </div>
-                <div class="form-group">
-                    <p class="form-control-static status-bar" ng-show="ntiClient.userin">用户号码: {{ntiClient.userin.sessionType==1 ? ntiClient.userin.caller : ntiClient.userin.callee}}</p>
+                <div class="form-group" ng-show="ntiClient.status==1">
+                    <p class="form-control-static status-bar" ng-show="ntiClient.userin">用户号码:
+                        {{ntiClient.userin.sessionType==1 ? ntiClient.userin.caller : ntiClient.userin.callee}}</p>
                 </div>
-                <div class="form-group">
-                    <p class="form-control-static status-bar">操作结果:{{ntiClient.error}}</p>
+                <div class="form-group" ng-show="ntiClient.status > -1">
+                    <p class="form-control-static status-bar">{{ntiClient.error}}</p>
                 </div>
             </form>
         </div>

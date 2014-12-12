@@ -27,6 +27,7 @@ app.factory('$nti', function($rootScope){
     };
 
     var defaultResult = function(data){
+        console.log(data);
         setup(function () {
             service.client.error = data.descr;
         });
@@ -41,12 +42,13 @@ app.factory('$nti', function($rootScope){
             });
 
             service._io.on('init_staff', function(data){
+                console.log('init_staff', data);
                 setup(function () {
-                    service.client.staffId = data.staff_id;
-                    service.client.agentId = data.agent_id;
-                    service.client.ext = data.ext;
-                    service.client.name = data.name;
-                    service.client.aqs = data.queues;
+                    service.client.staffId = data.staff.staff_id;
+                    service.client.agentId = data.staff.agent_id;
+                    service.client.ext = data.staff.ext;
+                    service.client.name = data.staff.name;
+                    service.client.aqs = data.staff.queues;
                     service.client.status = 0;
                     service.client.error = '连接成功';
                 });
@@ -83,6 +85,9 @@ app.factory('$nti', function($rootScope){
                 defaultResult(data);
             });
             service._io.on('transfer', function (data) {
+                defaultResult(data);
+            });
+            service._io.on('dial', function (data) {
                 defaultResult(data);
             });
             service._io.on('hangup', function (data) {
@@ -135,7 +140,7 @@ app.factory('$nti', function($rootScope){
                     service.client.name = data.agentName;
                     service.client.agentId = data.agentId;
                     service.client.ext = data.ext;
-                    service.client.isAdmin = data.typeCode == 'Y';
+                    service.client.isAdmin = data.typeCode == 'B';
                 })
             });
             service._io.on('admin_mode', function (data) {
@@ -448,7 +453,7 @@ app.controller('NtiBarCtrl', function ($scope, $nti) {
             agentId: $scope.ntiClient.agentId,
             password: 'e10adc3949ba59abbe56e057f20f883e',
             ext: $scope.ntiClient.ext,
-            queus: $scope.ntiClient.aqs,
+            queues: $scope.ntiClient.aqs,
             staffId: $scope.ntiClient.staffId
         });
     };

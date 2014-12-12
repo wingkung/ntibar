@@ -5,7 +5,7 @@ var io = require('socket.io')(server);
 var clientManage = require('./server/client');
 var config = require('./server/config');
 var port = 3100;
-var q = require('q'), db = require('./server/db');
+var q = require('q'), db = require('./server/db'), _ = require('lodash');
 
 io.of('/nti').on('connection', function (socket) {
     socket.on('init_staff', function (data) {
@@ -16,9 +16,10 @@ io.of('/nti').on('connection', function (socket) {
         var user = {};
 
         q().then(function () {
-            var sql = "select queue_id,name from queue";
-            return db.query(sql);
+            var sql = "select queue_id,queue_name from queue";
+            return db.query(sql,true);
         }).then(function (rows) {
+            console.log(rows);
             user.queues = rows;
             var sql = "select * from staff where cti_code=?";
             return db.query(sql, [cti_code], true)
@@ -28,16 +29,17 @@ io.of('/nti').on('connection', function (socket) {
                     return db.query('update staff set ismanager=?,name=? where cti_code=?', [type, name, cti_code]);
                 }
             } else {
-                var sql = "insert into staff (1 + IFNULL(MAX(wcode), 102), cti_code, name, password, state_date, state, ismanager) values " +
-                    "(?, ?, 'e10adc3949ba59abbe56e057f20f883e', now(), 'Y', ?)";
-                return db.query(sql, [cti_code, name, type], true).then(function(rows){
+                var sql = "insert into staff (wcode, warea_id,canton, cti_code, name, password, state_date, state, ismanager)  " +
+                    " select 1 + IFNULL(MAX(wcode), 102),'','', ?, ?, 'e10adc3949ba59abbe56e057f20f883e', now(), 'Y', ? from staff";
+                return db.query(sql, [cti_code, name, type]).then(function(rows){
                     var p = q();
                     user.queues.forEach(function(queue){
                         queue.queue_level = queue.queue_level || 10;
                         var sql = "insert into agent_queue (staff_id, queue_id, queue_level) values (?,?,?)";
                         p = p.then(function(){
                             return db.query(sql, [rows.insertId, queue.queue_id, 10]);
-                        })
+                        });
+                        queue.checked = true;
                     });
                     return p;
                 });
@@ -49,17 +51,15 @@ io.of('/nti').on('connection', function (socket) {
             user.staff_id = rows[0].staff_id;
             user.agent_id = rows[0].wcode;
             user.ext = rows[0].con_tel || '';
-            var sql = "select queue_id,name from queue";
-            return db.query(sql, true);
-        }).then(function (rows) {
-            user.queues = rows;
-            var sql = "select staff_id,queue_id,queue_level form agent_queue where staff_id=?";
+            user.name = name;
+            var sql = "select staff_id,queue_id,queue_level from agent_queue where staff_id=?";
             return db.query(sql, [user.staff_id], true);
         }).then(function (rows) {
             rows.forEach(function (row) {
                 _.find(user.queues, {queue_id: row.queue_id}).checked = true;
             })
         }).then(function (rows) {
+            console.log(user);
             socket.emit('init_staff', {rtn: true, staff: user});
         }).catch(function (e) {
             console.log(e.stack);
@@ -76,15 +76,17 @@ io.of('/nti').on('connection', function (socket) {
                 throw new Error('参数不完整');
             }
         }).then(function () {
-            var sql = "delete from agent_queue where staffId=?";
+            var sql = "delete from agent_queue where staff_id=?";
             return db.query(sql, [data.staffId]);
         }).then(function () {
             var p = q();
+            console.log(data.queues);
+            data.queues = _.where(data.queues, {checked: true});
             data.queues.forEach(function(queue){
                 queue.queue_level = queue.queue_level || 10;
                 var sql = "insert into agent_queue (staff_id, queue_id, queue_level) values (?,?,?)";
                 p = p.then(function(){
-                    return db.query(sql, [data.staffId, queue.queue_id]);
+                    return db.query(sql, [data.staffId, queue.queue_id, queue.queue_level]);
                 })
             });
             return p;

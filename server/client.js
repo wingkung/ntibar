@@ -53,7 +53,7 @@ exports.Client = function (params) {
         });
         self.netSocket.on('error', function (err) {
             console.log(self.tenantId + '-' + self.agentId + ":客户端连接异常" + err);
-            self.broadcast(self.sockets, 'cti_error', {descr: 'CTI连接异常'});
+            self.broadcast(self.sockets, 'cti_error', {descr: 'CTI连接断开'});
             self.destroy();
         });
         self.netSocket.on('end', function () {
@@ -77,7 +77,20 @@ exports.Client = function (params) {
                 }, 3000);
 
             } else {
-                self.broadcast(self.sockets, 'login', {rtn: false, descr: '登录失败'});
+                var descr = '登录失败';
+                if (args[1] == '11'){
+                    descr = "坐席不存在";
+                }else if (args[1] == '12'){
+                    descr = "坐席已登录";
+                }else if (args[1] == "13"){
+                    descr = "密码错误";
+                }else if (args[1] == '14'){
+                    descr = "分机通话中";
+                }else if(args[1] == '16'){
+                    descr = "分机已被使用";
+                }
+
+                self.broadcast(self.sockets, 'login', {rtn: false, descr: descr});
                 self.destroy();
             }
         } else if (args[0] == 'AgentState') {
@@ -476,5 +489,6 @@ exports.findBySocket = function (socket) {
 
 var remove = exports.remove = function (tenantId, agentId) {
     _.remove(clients, {tenantId: tenantId, agentId: agentId});
+    console.log('删除',tenantId,agentId,clients);
 };
 
