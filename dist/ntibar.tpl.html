@@ -14,11 +14,10 @@
                     <span class="form-control-static">分配工号:{{ntiClient.agentId}}</span>
                     <input class="form-control" ng-model="ntiClient.ext" placeholder="电话号码">
 
-                    <div class="checkbox-inline">
-                        <label ng-repeat="aq in ntiClient.aqs">
+                    <div class="queues checkbox-inline">
+                        <label class="queue" ng-repeat="aq in ntiClient.aqs">
                             <input type="checkbox" ng-model="aq.checked"> {{aq.queue_name}}
                         </label>
-
                     </div>
                     <button class="btn btn-sm btn-info" ng-click="ntiLogin()">
                         <i class="fa fa-sign-in"></i>&nbsp;签入

@@ -63,3 +63,9 @@
 .ntibar nti-func:last-child {
   display: block;
 }
+.queues {
+  width: 500px;
+}
+.queues .queue {
+  width: 100px;
+}
