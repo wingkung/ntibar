@@ -56,7 +56,8 @@ io.of('/nti').on('connection', function (socket) {
             return db.query(sql, [user.staff_id], true);
         }).then(function (rows) {
             rows.forEach(function (row) {
-                _.find(user.queues, {queue_id: row.queue_id}).checked = true;
+                var queue = _.find(user.queues, {queue_id: row.queue_id});
+                if (queue) queue.checked = true;
             })
         }).then(function (rows) {
             console.log(user);
