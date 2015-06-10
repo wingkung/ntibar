@@ -33,8 +33,11 @@ app.factory('$nti', function($rootScope){
         });
     };
 
-    service.init = function(){
-
+    service.init = function(url, uid, name, type){
+        if (!service._state){
+            service.start(url, uid, name, type);
+            service._state = true;
+        }
     };
     service.start = function (url, uid, name, type) {
         $.getScript('http://' + url + '/socket.io/socket.io.js').done(function () {
@@ -391,7 +394,6 @@ app.factory('$nti', function($rootScope){
         })
     };
 
-    service.start();
     return service;
 });
 
