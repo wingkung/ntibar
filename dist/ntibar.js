@@ -33,7 +33,10 @@ app.factory('$nti', function($rootScope){
         });
     };
 
-    service.init = function (url, uid, name, type) {
+    service.init = function(){
+
+    };
+    service.start = function (url, uid, name, type) {
         $.getScript('http://' + url + '/socket.io/socket.io.js').done(function () {
             service.client.url = url;
             service._io = io('http://' + url + '/nti');
@@ -387,6 +390,8 @@ app.factory('$nti', function($rootScope){
             });
         })
     };
+
+    service.start();
     return service;
 });
 
